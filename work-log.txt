@@ -1,0 +1,11 @@
+25.5.12.
+chore: 프로젝트 초기 설정 및 파일 추가
+
+
+- .gitignore, .prettierignore, README.md, eslint.config.js, index.html, package-lock.json, package.json, public/vite.svg 파일 추가
+
+- src 폴더 내 App, assets, feature, supabase 관련 파일 및 스타일 추가
+
+- tsconfig 관련 설정 파일 추가
+
+- vite.config.ts 파일 추가

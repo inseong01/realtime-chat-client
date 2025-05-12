@@ -1,0 +1,17 @@
+.chat {
+  width: 500px;
+  height: 100%;
+
+  border: 1px solid #ddd;
+  border-radius: 15px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+@media (width <= 600px) {
+  .chat {
+    width: 100%;
+  }
+}

@@ -18,13 +18,14 @@ export default function ChatRoom({ messages }: { messages: MessagePayload[] }) {
 
   return (
     <div className='chat-room' ref={chatRoomRef}>
+      <span></span>
       {messages.map((msg, index) => (
         <Message key={index} msg={msg} />
       ))}
       {isTyping && (
         <div className='receive'>
           <div className='msg'>
-            <div className='typing'>
+            <div className='typing flex-center'>
               <span></span>
               <span></span>
               <span></span>

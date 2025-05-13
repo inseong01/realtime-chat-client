@@ -1,55 +1,34 @@
 /* 메시지 */
 .msg {
-  max-width: 270px;
-  word-break: break-all;
-  background-color: #ddd;
+  max-width: 230px;
+
   border: 1px solid #ddd;
-  padding: 2px 18px;
-  border-radius: 20px;
-  margin: 4px 0;
+  border-radius: 8px;
+  background-color: #ddd;
 
   display: inline-block;
-  font-size: 1rem;
+
   box-sizing: border-box;
+  word-break: break-all;
   overflow: hidden;
+
+  padding: 2px 12px;
+  margin: 4px 0;
 }
-.msg.projects_1 {
-  padding: 0px;
-}
-.msg.projects_2 {
-  padding: 0px;
-}
-.send .msg {
+
+[data-writer='admin'] .msg {
   background-color: #ddd;
 }
-.receive .msg {
+[data-writer='client'] .msg {
   background-color: white;
 }
 
-/* 메시지 수신발신 위치 구분 */
-.send {
+/* 수신/발신인 메시지 위치 구분 */
+[data-writer='client'] {
   display: flex;
   justify-content: end;
-  position: relative;
 }
-.receive {
+[data-writer='admin'] {
   display: flex;
   justify-content: start;
-}
-
-.send:last-child.unread::after {
-  content: 'send';
-  position: absolute;
-  right: 0;
-  bottom: -20px;
-  font-size: 16px;
-  color: #999;
-}
-.send:last-child.read::after {
-  content: 'read';
-  position: absolute;
-  right: 0;
-  bottom: -20px;
-  font-size: 16px;
-  color: #999;
 }

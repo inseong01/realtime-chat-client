@@ -1,8 +1,10 @@
 /* 입력창 */
 .chat-footer {
   width: 100%;
+
   display: flex;
-  gap: 10px;
+  gap: 8px;
+
   padding: 12px;
   box-sizing: border-box;
 }
@@ -10,24 +12,20 @@
 /* 입력창 객체 */
 .text_input {
   flex: 1;
-  padding: 0 12px;
-  border-radius: 10px;
+
+  border-radius: 8px;
   border: 1px solid #ddd;
-}
-.text_input:focus {
-  outline: none;
+
+  padding: 8px 12px;
 }
 
-.text_input_btn {
+.send_btn {
   background-color: #4084f1;
   color: white;
 }
-.text_input_btn:focus {
-  outline: none;
-}
 
 @media (hover: hover) and (pointer: fine) {
-  .text_input_btn:hover {
+  .send_btn:hover {
     background-color: #437fe0;
     color: rgb(235, 235, 235);
   }

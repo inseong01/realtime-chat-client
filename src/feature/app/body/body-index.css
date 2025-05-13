@@ -1,22 +1,17 @@
 /* 대화 본문 */
 .chat-room {
   width: 100%;
-  height: calc(100%);
-  padding: 16px;
-  overflow: auto;
-  box-sizing: border-box;
-  position: relative;
-}
+  height: 100%;
 
-.chat-room::-webkit-scrollbar {
-  display: none;
+  box-sizing: border-box;
+  overflow: auto;
+
+  position: relative;
+  padding: 8px 16px;
 }
 
 /* typing css */
 .chat-room .typing {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   gap: 5px;
 }
 .chat-room .typing span {

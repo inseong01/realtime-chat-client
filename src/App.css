@@ -1,13 +1,29 @@
-.chat {
-  width: 500px;
-  height: 100%;
+#chat {
+  width: 300px;
+  height: 50%;
 
   border: 1px solid #ddd;
-  border-radius: 15px;
+  border-radius: 8px;
 
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
+  position: fixed;
+  right: 10px;
+  bottom: 60px;
+}
+
+#app_icon {
+  position: fixed;
+  right: 10px;
+  bottom: 10px;
+
+  border: 1px solid #ddd;
+  border-radius: 8px;
+
+  width: 40px;
+  height: 40px;
 }
 
 @media (width <= 600px) {

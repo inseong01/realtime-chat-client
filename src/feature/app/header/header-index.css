@@ -35,7 +35,6 @@
   background-color: #b3b3b3;
 }
 
-/* 관리자 상태 */
 .chat-header [data-admin='online'] {
   color: green;
 }

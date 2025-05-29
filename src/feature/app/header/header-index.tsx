@@ -1,14 +1,19 @@
-import './header-index.css';
-import { AdminStateContext, SetAppCickContext } from '../../../App';
+import { memo, useContext } from 'react';
 
-import { useContext } from 'react';
+import { OpponentStateContext, SetIconClickContext } from '../../../util/context/context';
+
+import './header-index.css';
 
 export default function ChatHeader() {
-  const { status } = useContext(AdminStateContext);
-  const { setAppClicked } = useContext(SetAppCickContext)!;
+  const { isOnline } = useContext(OpponentStateContext);
+  const { setIconClick } = useContext(SetIconClickContext);
 
-  const statusStyle = status ? 'online' : 'offline';
-  const adminStatus = status ? '온라인' : '오프라인';
+  const statusStyle = isOnline ? 'online' : 'offline';
+  const adminStatus = isOnline ? '온라인' : '오프라인';
+
+  function onClickHeaderCloseIcon() {
+    setIconClick((prev: boolean) => !prev);
+  }
 
   return (
     <div className='chat-header'>
@@ -25,15 +30,15 @@ export default function ChatHeader() {
         role='button'
         title='닫기'
         aria-label='채팅 창 닫기'
-        onClick={() => setAppClicked((prev: boolean) => !prev)}
+        onClick={onClickHeaderCloseIcon}
       >
-        <CloseIconSVG />
+        <OptimizedCloseIconSVG />
       </button>
     </div>
   );
 }
 
-function CloseIconSVG() {
+const OptimizedCloseIconSVG = memo(function CloseIconSVG() {
   return (
     <svg width='18' height='18' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
       <line
@@ -56,4 +61,4 @@ function CloseIconSVG() {
       />
     </svg>
   );
-}
+});

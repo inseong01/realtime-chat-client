@@ -1,23 +1,56 @@
-import './footer-index.css';
-import { AdminStateContext, GetMessageContext, type MessagePayload } from '../../../App';
+import { useContext, useState, type ChangeEvent } from 'react';
 
-import { useContext, useState } from 'react';
+import { OpponentStateContext, UserIDContext } from '../../../util/context/context';
+import type { MessageDataPayload } from '../../../util/const/common';
+import { supabase } from '../../../util/supabase/supabaseClient';
+
+import './footer-index.css';
 
 export default function ChatFooter() {
-  const { status } = useContext(AdminStateContext);
-  const { getMessage } = useContext(GetMessageContext)!;
+  const USER_ID = useContext(UserIDContext);
+  const { isOnline } = useContext(OpponentStateContext);
 
   const [text, typingText] = useState('');
 
-  function sendMessage() {
-    const msg: MessagePayload = {
+  const MY_CHANNEL = supabase.channel('channel_1', {
+    config: {
+      broadcast: { self: true },
+    },
+  });
+
+  function onClickSendMessage() {
+    if (!text.length) return;
+
+    const msgData: MessageDataPayload = {
       type: 'broadcast',
-      event: 'shout',
-      payload: { message: text, writer: 'client' },
+      event: 'send',
+      payload: { text: text, isTyping: false, id: USER_ID },
     };
 
-    getMessage((prev) => [...prev, msg]);
-    console.log('click');
+    MY_CHANNEL.send(msgData).then((res) => console.log(res));
+
+    const updatedOpponentState: MessageDataPayload = {
+      type: 'broadcast',
+      event: 'opponent',
+      payload: { text: text, isTyping: false, id: USER_ID },
+    };
+
+    MY_CHANNEL.send(updatedOpponentState).then((res) => console.log(res));
+
+    typingText('');
+  }
+
+  function onChangeTypingWords(e: ChangeEvent<HTMLInputElement>) {
+    typingText(e.target.value);
+
+    const isTyping = e.target.value.length !== 0;
+    const updatedOpponentState: MessageDataPayload = {
+      type: 'broadcast',
+      event: 'opponent',
+      payload: { text: '', isTyping, id: USER_ID },
+    };
+
+    MY_CHANNEL.send(updatedOpponentState).then((res) => console.log(res));
   }
 
   return (
@@ -25,14 +58,16 @@ export default function ChatFooter() {
       <input
         type='text'
         className='text_input'
+        onChange={onChangeTypingWords}
         value={text}
-        onChange={(e) => typingText(e.target.value)}
-        // disabled={!status}
-        placeholder={status ? '문의 내용을 입력해주세요' : '현재 관리자가 오프라인입니다'}
+        // disabled={!isOnline}
+        placeholder={
+          isOnline ? '문의 내용을 입력해주세요' : '현재 관리자가 오프라인입니다'
+        }
       />
       <button
         className='send_btn flex-center'
-        onClick={sendMessage}
+        onClick={onClickSendMessage}
         title='전송하기'
         aria-label='전송하기'
         role='button'

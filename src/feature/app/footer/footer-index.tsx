@@ -1,14 +1,17 @@
 import { useContext, useState, type ChangeEvent } from 'react';
 
-import { OpponentStateContext, UserIDContext } from '../../../util/context/context';
-import type { MessageDataPayload } from '../../../util/const/common';
+import {
+  OpponentStateContext,
+  UserIDContextContext,
+} from '../../../util/context/context';
+import { type MessageDataPayload } from '../../../util/const/common';
 import { supabase } from '../../../util/supabase/supabaseClient';
 
 import './footer-index.css';
 
 export default function ChatFooter() {
-  const USER_ID = useContext(UserIDContext);
   const { isOnline } = useContext(OpponentStateContext);
+  const USER_ID = useContext(UserIDContextContext);
 
   const [text, typingText] = useState('');
 
@@ -18,36 +21,46 @@ export default function ChatFooter() {
     },
   });
 
+  /* 메시지 전송 */
   function onClickSendMessage() {
     if (!text.length) return;
+
+    const receiver_id = 'admin';
+    const send_at = new Date().toISOString();
 
     const msgData: MessageDataPayload = {
       type: 'broadcast',
       event: 'send',
-      payload: { text: text, isTyping: false, id: USER_ID },
+      payload: { text: text, isTyping: false, id: USER_ID, send_at, receiver_id },
     };
-
-    MY_CHANNEL.send(msgData).then((res) => console.log(res));
 
     const updatedOpponentState: MessageDataPayload = {
       type: 'broadcast',
       event: 'opponent',
-      payload: { text: text, isTyping: false, id: USER_ID },
+      payload: { text: '', isTyping: false, id: USER_ID, send_at },
     };
 
-    MY_CHANNEL.send(updatedOpponentState).then((res) => console.log(res));
+    Promise.all([MY_CHANNEL.send(msgData), MY_CHANNEL.send(updatedOpponentState)]).catch(
+      (err) => {
+        console.error('Error sending messages: ', err);
+      }
+    );
 
     typingText('');
   }
 
+  /* 메시지 작성 */
   function onChangeTypingWords(e: ChangeEvent<HTMLInputElement>) {
     typingText(e.target.value);
 
+    const receiver_id = 'admin';
+    const send_at = new Date().toISOString();
     const isTyping = e.target.value.length !== 0;
+
     const updatedOpponentState: MessageDataPayload = {
       type: 'broadcast',
       event: 'opponent',
-      payload: { text: '', isTyping, id: USER_ID },
+      payload: { text: '', isTyping, id: USER_ID, send_at, receiver_id },
     };
 
     MY_CHANNEL.send(updatedOpponentState).then((res) => console.log(res));
@@ -60,7 +73,7 @@ export default function ChatFooter() {
         className='text_input'
         onChange={onChangeTypingWords}
         value={text}
-        // disabled={!isOnline}
+        disabled={!isOnline}
         placeholder={
           isOnline ? '문의 내용을 입력해주세요' : '현재 관리자가 오프라인입니다'
         }

@@ -1,10 +1,9 @@
 import { createContext, type Dispatch, type SetStateAction } from 'react';
-import { v1 as uuidv1 } from 'uuid';
 
 import type { MessageDataPayload } from '../const/common';
 
-export const USER_ID = uuidv1();
-export const UserIDContext = createContext(USER_ID);
+type UserIDContext = string;
+export const UserIDContextContext = createContext<UserIDContext>('');
 
 export const initialOpponentState = { isOnline: false, isTyping: false };
 export const OpponentStateContext = createContext(initialOpponentState);

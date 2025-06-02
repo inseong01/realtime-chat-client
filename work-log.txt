@@ -85,3 +85,29 @@ chore: 채팅 기능 구현 및 UI 개선
 - UI 개선
   - index.css 스타일 초기화
   - StrictMode 추가
+
+25.6.2.
+chore: 챗봇 UI 및 기능 개선
+
+
+- 아이콘 변경
+  - vite.svg -> chatbot.svg
+
+- 로컬 스토리지 ID 저장
+  -  USER_ID 변경 시 반영
+
+- 메시지 필터링 로직 개선
+  - 본인 메시지만 필터링 -> 모든 메시지 수신 후 필터링
+
+- 관리자 ID 고유화
+  - ADMIN_ID 추가, 메시지 송수신 시 관리자 판별
+
+- 메시지 UI 개선
+  - 말풍선 최대 너비 축소, 애니메이션 추가
+
+- 입력 비활성화 로직 추가
+  - 관리자 오프라인 시 메시지 입력 비활성화
+
+- 불필요한 파일 제거
+  - supabaseReceive.js, supabaseSend.js 제거
+

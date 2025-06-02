@@ -5,13 +5,17 @@ import {
   GetMessageContext,
   initialOpponentState,
   SetIconClickContext,
-  USER_ID,
-  UserIDContext,
+  UserIDContextContext,
 } from './util/context/context';
-import { initMessages, type MessageDataPayload } from './util/const/common';
+import {
+  ADMIN_ID,
+  initMessages,
+  USER_ID,
+  type MessageDataPayload,
+} from './util/const/common';
+import { supabase } from './util/supabase/supabaseClient';
 
 import './App.css';
-import { supabase } from './util/supabase/supabaseClient';
 import ChatHeader from './feature/app/header/header-index';
 import ChatMain from './feature/app/body/body-index';
 import ChatFooter from './feature/app/footer/footer-index';
@@ -19,11 +23,10 @@ import ChatFooter from './feature/app/footer/footer-index';
 // https://supabase.com/docs/guides/realtime?queryGroups=language&language=js
 
 /*
-  Key가 USER_ID와 다르면 상대방 데이터로 판단 중
-  
-  다수 인원 접속 시 관리자 판별 어려움
-  -> 관리자 ID 고유화 필요 
-  -> 관리자 메시지 필터링 필요
+  문제점
+
+  - 모든 메시지를 수신하고 본인 메시지만 필터링 중, 다른 발신인의 메시지 염탐 가능 
+  - ADMIN_ID: 인식 방법, 다른 사용자와 구분 가능해야 함
 */
 
 export default function App() {
@@ -31,9 +34,14 @@ export default function App() {
   const [opponentState, setOpponentState] = useState(initialOpponentState);
   const [messages, getMessage] = useState<MessageDataPayload[]>(initMessages);
 
+  const localStorageID = localStorage.getItem('id');
+  const ID = localStorageID ?? USER_ID;
+
   useEffect(() => {
+    localStorage.setItem('id', ID);
+
     const userStatus = {
-      userID: USER_ID,
+      userID: ID,
       online_at: new Date().toISOString(),
       isOnline: true,
     };
@@ -42,19 +50,24 @@ export default function App() {
       /* 채팅방 설정 */
       .channel('channel_1', {
         config: {
-          presence: { key: USER_ID },
+          presence: { key: ID },
         },
       });
 
     MY_CHANNEL
       /* 데이터 송수신 */
       .on('broadcast', { event: 'send' }, (data) => {
+        const isMySelf = data.payload.id === ID;
+        const isMyMessage = data.payload?.receiver_id === ID;
+
+        if (!(isMySelf || isMyMessage)) return;
+
         getMessage((prev) => [...prev, data as MessageDataPayload]);
       })
       .on('broadcast', { event: 'opponent' }, (data) => {
-        const isOpponent = USER_ID !== data.payload.id;
+        const isAdmin = data.payload.id === ADMIN_ID;
 
-        if (!isOpponent) return;
+        if (!isAdmin) return;
 
         const isTyping = data.payload.isTyping;
         setOpponentState((prev) => ({ ...prev, isTyping }));
@@ -64,13 +77,15 @@ export default function App() {
       /* 채팅방 연결 */
       .on('presence', { event: 'sync' }, () => {})
       .on('presence', { event: 'join' }, ({ key }) => {
-        if (key === USER_ID) return;
+        if (key === ID) return;
+        if (key !== ADMIN_ID) return;
 
         const isOnline = true;
         setOpponentState((prev) => ({ ...prev, isOnline }));
       })
       .on('presence', { event: 'leave' }, ({ key }) => {
-        if (key === USER_ID) return;
+        if (key === ID) return;
+        if (key !== ADMIN_ID) return;
 
         const isOnline = false;
         setOpponentState((prev) => ({ ...prev, isOnline }));
@@ -90,7 +105,7 @@ export default function App() {
   }, []);
 
   return (
-    <UserIDContext.Provider value={USER_ID}>
+    <UserIDContextContext.Provider value={ID}>
       <OpponentStateContext.Provider value={opponentState}>
         <SetIconClickContext.Provider value={{ setIconClick: setIconClick }}>
           <GetMessageContext.Provider value={{ getMessage: getMessage }}>
@@ -102,7 +117,7 @@ export default function App() {
           </GetMessageContext.Provider>
         </SetIconClickContext.Provider>
       </OpponentStateContext.Provider>
-    </UserIDContext.Provider>
+    </UserIDContextContext.Provider>
   );
 }
 

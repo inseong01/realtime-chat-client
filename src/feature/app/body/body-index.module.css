@@ -10,11 +10,13 @@
 }
 
 .msg {
-  max-width: 230px;
+  max-width: 170px;
 
   border: 1px solid #ddd;
   border-radius: 8px;
   background-color: #ddd;
+
+  line-height: 20px;
 
   display: inline-block;
 
@@ -23,7 +25,7 @@
   overflow: hidden;
 
   padding: 2px 12px;
-  margin: 2px 0;
+  margin: 4px 0;
 }
 
 [data-writer='admin'] .msg {
@@ -51,6 +53,18 @@
   animation: scaleUp 0.3s ease-out;
 }
 
+@keyframes scaleUp {
+  0% {
+    transform: scale(0%);
+  }
+  50% {
+    transform: scale(105%);
+  }
+  100% {
+    transform: scale(100%);
+  }
+}
+
 .typing {
   gap: 5px;
 }
@@ -60,7 +74,7 @@
   height: 11px;
   border-radius: 50%;
   display: block;
-  margin: 7px 0;
+  margin: 5px 0;
 }
 .typing span:nth-child(1) {
   background-color: hsl(0 0% 70% / 1);
@@ -75,18 +89,6 @@
   background-color: hsl(0 0% 70% / 1);
   animation: bounce 1s infinite;
   animation-delay: 0.2s;
-}
-
-@keyframes scaleUp {
-  0% {
-    transform: scale(0%);
-  }
-  50% {
-    transform: scale(105%);
-  }
-  100% {
-    transform: scale(100%);
-  }
 }
 
 @keyframes bounce {

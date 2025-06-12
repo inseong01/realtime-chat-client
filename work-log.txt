@@ -111,3 +111,24 @@ chore: 챗봇 UI 및 기능 개선
 - 불필요한 파일 제거
   - supabaseReceive.js, supabaseSend.js 제거
 
+
+25.6.12.
+chore: 실시간 채팅 웹 애플리케이션 구현
+
+
+- 프로젝트 환경 설정 
+  - vercel 설정 파일 추가 
+  - eslint 설정 변경 (any 타입 에러 해결)
+  - index.html lang 속성 및 font 추가 
+  - favicon.svg 추가 
+  - supabase 설치 및 환경 변수 설정 
+  - 불필요한 파일 삭제 및 파일명 변경 
+  
+
+- UI 구현
+  - icon 추가 및 import 경로 변경 
+  - 컴포넌트 구조 변경 및 스타일 분리
+  - 메시지 읽음 기능 구현
+  - 메시지 전송 및 타이핑 기능 구현
+  - 사용자 이름 표시 기능 구현
+

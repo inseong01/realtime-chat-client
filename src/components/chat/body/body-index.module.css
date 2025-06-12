@@ -9,42 +9,6 @@
   padding: 8px 16px;
 }
 
-.msg {
-  max-width: 170px;
-
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background-color: #ddd;
-
-  line-height: 20px;
-
-  display: inline-block;
-
-  box-sizing: border-box;
-  word-break: break-all;
-  overflow: hidden;
-
-  padding: 2px 12px;
-  margin: 4px 0;
-}
-
-[data-writer='admin'] .msg {
-  background-color: #ddd;
-}
-[data-writer='client'] .msg {
-  background-color: white;
-}
-
-/* 수신/발신인 메시지 위치 구분 */
-[data-writer='client'] {
-  display: flex;
-  justify-content: end;
-}
-[data-writer='admin'] {
-  display: flex;
-  justify-content: start;
-}
-
 /* 입력중 */
 .receive {
   display: flex;
@@ -66,27 +30,30 @@
 }
 
 .typing {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   gap: 5px;
 }
 
 .typing span {
-  width: 11px;
-  height: 11px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   display: block;
   margin: 5px 0;
 }
 .typing span:nth-child(1) {
-  background-color: hsl(0 0% 70% / 1);
+  background-color: #b8b8b8;
   animation: bounce 1s infinite;
 }
 .typing span:nth-child(2) {
-  background-color: hsl(0 0% 70% / 1);
+  background-color: #b8b8b8;
   animation: bounce 1s infinite;
   animation-delay: 0.1s;
 }
 .typing span:nth-child(3) {
-  background-color: hsl(0 0% 70% / 1);
+  background-color: #b8b8b8;
   animation: bounce 1s infinite;
   animation-delay: 0.2s;
 }

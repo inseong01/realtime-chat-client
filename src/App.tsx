@@ -65,19 +65,33 @@ function App() {
 
     MY_CHANNEL
       /* 채팅방 연결 */
+      .on('presence', { event: 'sync' }, () => {
+        const adminID = ADMIN_ID;
+        const myID = ID;
+        const isOnline = true;
+
+        const newState = MY_CHANNEL.presenceState();
+        const isAdminOnline = Object.hasOwn(newState, adminID);
+
+        if (!isAdminOnline) return;
+
+        const key = adminID;
+
+        visitorDispatch({ type: 'SET_ADMIN_ONLINE_STATUS', key, adminID, myID, isOnline });
+      })
       .on('presence', { event: 'join' }, ({ key }) => {
         const adminID = ADMIN_ID;
         const myID = ID;
         const isOnline = true;
 
-        visitorDispatch({ type: 'UPDATE_ADMIN_ONLINE_STATUS', key, adminID, myID, isOnline });
+        visitorDispatch({ type: 'SET_ADMIN_ONLINE_STATUS', key, adminID, myID, isOnline });
       })
       .on('presence', { event: 'leave' }, ({ key }) => {
         const adminID = ADMIN_ID;
         const myID = ID;
         const isOnline = false;
 
-        visitorDispatch({ type: 'UPDATE_ADMIN_ONLINE_STATUS', key, adminID, myID, isOnline });
+        visitorDispatch({ type: 'SET_ADMIN_ONLINE_STATUS', key, adminID, myID, isOnline });
       });
 
     MY_CHANNEL

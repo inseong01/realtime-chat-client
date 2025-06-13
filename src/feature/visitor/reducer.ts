@@ -33,7 +33,7 @@ interface UpdateAdminTypingStatusAction {
 }
 
 interface UpdateAdminOnlineStatusAction {
-  type: 'UPDATE_ADMIN_ONLINE_STATUS';
+  type: 'SET_ADMIN_ONLINE_STATUS';
   key: string;
   adminID: string;
   myID: string;
@@ -95,7 +95,7 @@ export function visitorReducer(state: InitVisitorAppState, action: ActionType) {
         },
       };
     }
-    case 'UPDATE_ADMIN_ONLINE_STATUS': {
+    case 'SET_ADMIN_ONLINE_STATUS': {
       const ADMIN_ID = action.adminID;
       const MY_ID = action.myID;
       const key = action.key;

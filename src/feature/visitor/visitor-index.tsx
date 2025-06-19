@@ -1,6 +1,5 @@
 import { useContext, useEffect } from 'react';
 
-import { type MessageMetaData } from '../../util/const/const';
 import { UserIDContextContext } from '../../util/context/global';
 
 import { VisitorDispatchContext, VisitorReducerStateContext } from './context';
@@ -11,18 +10,8 @@ import ChatFooter from '../../components/chat/footer/footer-index';
 import ChatBody from '../../components/chat/body/body-index';
 
 export default function VisitorChatMode() {
-  const state = useContext(VisitorReducerStateContext);
-
-  return (
-    <>
-      {/* 채팅방 */}
-      <ChatRoomDisplay messages={state.messages} />
-    </>
-  );
-}
-
-function ChatRoomDisplay({ messages }: { messages: MessageMetaData[] }) {
   const { adminStatus } = useContext(VisitorReducerStateContext);
+  const visitorState = useContext(VisitorReducerStateContext);
   const reducer = useContext(VisitorDispatchContext);
   const USER_ID = useContext(UserIDContextContext);
 
@@ -55,7 +44,7 @@ function ChatRoomDisplay({ messages }: { messages: MessageMetaData[] }) {
       <ChatHeader opponentType='상담사' opponentStatus={statusString} />
 
       {/* 메인 */}
-      <ChatBody messages={messages} isOpponentTyping={isTyping} />
+      <ChatBody messages={visitorState.messages} isOpponentTyping={isTyping} />
 
       {/* 푸터 */}
       <ChatFooter id={USER_ID} receiver_id='admin' isOpponentOnline={isOnline} />

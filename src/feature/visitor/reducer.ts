@@ -109,6 +109,7 @@ export function visitorReducer(state: InitVisitorAppState, action: ActionType) {
         adminStatus: {
           ...state.adminStatus,
           isOnline,
+          isTyping: false,
         },
       };
     }

@@ -172,3 +172,12 @@ docs: README 업데이트
 
 - 설치 및 실행 방법 상세 설명
 
+
+25.6.19.
+refactor: Visitor 채팅 기능 개선
+
+
+- 상담사 타이핑 상태 초기화 추가
+
+- ChatRoomDisplay 컴포넌트 내부 로직 개선
+
